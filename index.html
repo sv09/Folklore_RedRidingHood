@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red Riding Hood</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.js"></script>
+        <script src="https://unpkg.com/d3-array@1"></script>
+        <script src="https://unpkg.com/d3-collection@1"></script>
+        <script src="https://unpkg.com/d3-path@1"></script>
+        <script src="https://unpkg.com/d3-shape@1"></script>
+        <script src="https://unpkg.com/d3-sankey@0"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600&family=Lato:wght@300;400;700&family=Questrial&family=Roboto+Condensed:wght@300;400;700&display=swap');
+    </style>
+</head>
+<body>
+    <script type="module" src="folkloreSections.js"></script>
+    <script type="module" src="sankey.js"></script>
+    <div id="inner-content">
+        <div class="article-title">
+            Journey of Little Red
+        </div>
+        <div class="clearboth"></div>
+        <div class="intro">
+            <p>A folktale typically evolves gradually over time, with new parts of the story added and others lost as it gets passed down from generation to generation.</p>
+            <p>Researchers have examined the distribution of common plot elements within and across regions to make inferences about past migration, cross-cultural contact, and the impact of geographical distance and language barriers on cultural diffusion. It has been suggested that patterns of stability and changes in stories can furnish rich insights into universal and variable aspects of the human experience, and reveal how psychological, social and ecological processes interact with one another to shape cultural continuity and diversity.</p>
+            <p>The chart shows how the story of 'Little Red Riding Hood' evolved and spread across different regions, based on the paper <a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0078871">'The Phylogeny of Little Red Riding Hood'</a> published by Dr.Jamshid J. Tehrani</p>
+        </div>
+        <div id="infographic">
+            <div id="sections">
+                <div class="step">
+                    <!-- Pre 1st century -->
+                    <h4>Aesop's Fables</h4>
+                    <p class="aesop-description">A collection of stories believed to have been told by Aesop who lived in Greece around 600BC. </p>
+                </div>
+                <div class="step">
+                    <!-- 1st century -->
+                    <h4>1st Century - The Wolf and the Kids</h4>
+                </div> 
+                <div class="step">
+                    <!-- African Tales -->
+                    <h4> African Tales</h4>
+                </div>
+                <div class="step">
+                    <!-- 10th century -->
+                    <h4>10th Century - Catterinella</h4>
+                    <p>Diverged from Wolf & the Kids to form red riding hood stories</p>
+                </div>
+                <div class="step">
+                    <!-- 11th century -->
+                    <h4>11th Century - A poem in Liege</h4>
+                </div>
+                <div class="step">
+                    <!-- 12th-14th century -->
+                    <h4>12th-14th Century</h4>
+                    <p>Wolf and the kids and the Red Riding Hood tales reach East Asia</p>
+                    <!-- <p>14th Century</p> -->
+                </div>
+                <!-- <div class="step">
+                    <!-- 14th century -->   
+                    <!-- <p>14th Century</p> -->
+                <!-- </div>  -->
+
+                <div class="step">
+                    <!-- 15th century -->
+                    <h4>15th Century</h4>
+                    <p>Story of Grandmother</p>
+                </div>
+                <div class="step">
+                    <!-- 17th century -->
+                    <h4>17th Century</h4>
+                    <p>Charles Perrault's Version of Red Riding Hood tales</p>
+                </div>
+                <div class="step">
+                    <!-- 18th century -->
+                    <h4>18th Century</h4>
+                    <p>The Tiger Grandmother - A hybrid of the Wolf and the Kids and the Red Riding Hood tales</p>
+                </div>
+                <div class="step">
+                    <!-- 19th century -->
+                    <h4>19th Century</h4>
+                    <p>Grimms' Fairy tales</p>
+                </div>
+            </div>
+            <div id="chart-c">
+                <div id="chart">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="rhh-twice">
+        <h3>Why did Red Riding Hood evolve twice?</h3>
+        <p>The fact that Red Riding Hood <a href="https://www.livescience.com/convergent-evolution.html">evolved twice independently</a>, suggests that it holds a powerful appeal that attracts people's imaginations - perhaps to teach children to never talk to strangers, or to be vary of unassuming, and complacent people who try to charm them out on streets only to prove dangerous once they have the confidence of the innocent victims.</p>
+    </div>
+    <div id="sankey">
+        <h4>The chart below highlights the characteristics, similarities, differences between different stories within each category of storyline</h4>
+    </div> 
+    <div id="footer">
+    </div>
+</body>
+</html>
