@@ -1,0 +1,39 @@
+{
+    "name": "Aesop's Fables",
+    "parent": "null",
+    "children": [
+    {
+        "name": "Wolf & the Kids",
+        "parent": "Aesop's Fables",
+        "children": [
+            {
+                "name": "African Tales",
+                "parent": "Wolf & the Kids"
+            },
+            {
+                "name": "Catterinella",
+                "parent": "Wolf & the Kids"
+            },
+            {
+                "name": "A Poem in Liege",
+                "parent": "Wolf & the Kids",
+                "children": [
+                    {
+                        "name": "Story of Grandmother",
+                        "parent": "A Poem in Liege"
+                    },
+                    {
+                        "name": "Charles Perrault's Version",
+                        "parent": "A Poem in Liege",
+                        "children": [
+                            {
+                                "name": "Grimms' Fairy Tales 'Rotkappchen'",
+                                "parent": "Charles Perrault's Version"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }]
+}
