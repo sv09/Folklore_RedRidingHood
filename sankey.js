@@ -1,6 +1,6 @@
-// import { sankey as Sankey } from "d3-sankey";
+// import { textWrap } from "./sankeyTextWrap";
 
-const sankeyWidth = 800;
+const sankeyWidth = 900;
 const sankeyHeight = 700;
 const margin = {top: 20, right: 10, bottom: 40, left: 10};
 
@@ -17,25 +17,48 @@ d3.csv("./data/SankeyData.csv")
         var leftSide = ["SPECIES OF THE VICTIM : Animal", "NUMBER OF VICTIM : Single", "SPECIES OF THE VILLAIN : Wolf", "THE GUARDIAN : Mother", "THE RELATIVE : Grandmother", "THE VILLAIN’S DISGUISE : Disguises as the guardian"];
         var rightSide = ["SPECIES OF THE VICTIM : Human", "NUMBER OF VICTIM : Multiple", "SPECIES OF THE VILLAIN : Other (Tiger, Lion, Ogre, Fox, Hyena, Alligator)", "THE GUARDIAN: Other (Father, Brother, Grandmother)", "THE RELATIVE : Other (Aunt/Uncle, Godfather, Mother, Son)", "THE VILLAIN’S DISGUISE : Disguises as the relative"]
 
+        function array_move(arr, old_index, new_index) {
+            if (new_index >= arr.length) {
+                var k = new_index - arr.length + 1;
+                while (k--) {
+                    arr.push(undefined);
+                }
+            }
+            arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+            return arr; // for testing
+        };
+
+
         let graph = {"nodes": [], "links": []}
 
         const sankeyData = _.map(data, d => {
             return {
                 "source": leftSide.includes(d.feature)? d.feature : d.categoryName,
                 "target": leftSide.includes(d.feature)? d.categoryName : d.feature,
-                "featurePos": +d.varPos,
-                "categoryPos": +d.categoryPos
+                // "featurePos": +d.varPos,
+                // "categoryPos": +d.categoryPos
             }          
         });
 
         sankeyData.push({
                     "source": "Aesop's Fables",
                     "target": "",
-                    "featurePos": "",
-                    "categoryPos": 1
-                })
+                    // "featurePos": "",
+                    // "categoryPos": 1
+                }
+                // ,
+                // {
+                //     "source": undefined,
+                //     "target": ""
+                // }
+            )
 
-        // console.log(sankeyData)
+        //rearrange the positions of some features
+        array_move(sankeyData, 173, 123)
+        array_move(sankeyData, 79, 11)
+
+
+        console.log(sankeyData)
 
         //create an array of unique category names
         const unique = (value, index, self) => {
@@ -78,20 +101,22 @@ d3.csv("./data/SankeyData.csv")
             graph.nodes[i] = { "name": node }
         })
 
+        console.log(graph)
 
+        //assigning each node a group
         _.map(graph.nodes, (d,i) => {
             let val = d.name
-            if(leftSide.includes(d.name)){
+            if(leftSide.includes(d.name) || d.name === undefined){
                 graph.nodes[i] = ({"node-group":"left", "name": val, "pos": leftSide.indexOf(d.name)});
             }else if(categoryNameUniq.includes(d.name)){
                 graph.nodes[i] = ({"node-group":"middle", "name": val, "pos": categoryNameUniq.indexOf(d.name)});
-            }else{ //if(!categoryNameUniq.includes(d.name)){
+            }else{
                 graph.nodes[i] = ({"node-group":"right", "name": val, "pos": rightSide.indexOf(d.name)});
             }                 
         });
 
         var sankey = d3.sankey()
-                    .size([sankeyWidth/1.5, sankeyHeight]) //+margin.left+margin.right    +margin.top+margin.bottom
+                    .size([sankeyWidth/1.6, sankeyHeight])
                     .nodeWidth(20)
                     .nodePadding(10)
                     .iterations(0)
@@ -131,14 +156,10 @@ d3.csv("./data/SankeyData.csv")
                 .attr("fill", "none")
                 .attr("stroke-width", 1.8)
                 .attr("stroke", d => linkColor(d)) //return color(d.source.name)  d.target.name?console.log(true):console.log(false)
-                .attr("transform", `translate(${sankeyWidth/1.1}, 0)`)
+                .attr("transform", `translate(${sankeyWidth/6}, 0)`)
 
 
         //NODES         
-
-        const NodeAlign = d3.scaleOrdinal()
-        .range([10, 20, 30]) //(sankeyWidth-(2*margin.right))
-        .domain(["left", "middle", "right"])
 
         let nodes = svg
                 .append("g")
@@ -152,12 +173,11 @@ d3.csv("./data/SankeyData.csv")
                 // .classed("node", true)
                 .attr("x", d => d.x0)
                 .attr("y", d => d.y0)
-                .attr("width", d => d.x1 - d.x0 + 10)
+                .attr("width", d => d.x1 - d.x0 + 8)
                 .attr("height", d => d["node-group"] === "middle"? d.y1 - d.y0 : 5)
                 .attr("fill", d => categoryNameUniq.includes(d.name) ? color(d.name) : 'none' )
                 .attr("opacity", 1)
-                .attr("transform", `translate(${sankeyWidth/1.1}, 0)`)
-                // .attr('transform', d => { return `translate(${NodeAlign(d["node-group"])}, 0)`}) 
+                .attr("transform", `translate(${sankeyWidth/6}, 0)`)
         
                 
         //TEXT
@@ -206,10 +226,11 @@ d3.csv("./data/SankeyData.csv")
                     .data(graph.nodes)
                     .enter()
                     .append("text")
-                    .attr("x", d => d.x0)
-                    .attr("y", d => d.y0)
+                    .attr("x", d => d["node-group"] === "right"? d.x0 + (d.x0/3.5) : d.x0)
+                    .attr("y", d => d.y0 + ((d.y1 - d.y0)/2))
                     .attr("fill", textColor)
                     .text(d => d["node-group"] !== "middle" ? d.name : '')
                     .call(textWrap)
+
 });
 
