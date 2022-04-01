@@ -4,6 +4,13 @@ const sankeyWidth = 900;
 const sankeyHeight = 700;
 const margin = {top: 20, right: 10, bottom: 40, left: 10};
 
+let legendSvg = d3.select("#sankey")
+                            .append("svg")
+                            .attr("width", sankeyWidth + margin.left + margin.right)
+                            .attr("height", 100)
+                            .append("g")
+                            .attr("transform", "translate(" + (margin.left + margin.right) + "," + margin.top + ")");
+
 const svg = d3.select("#sankey")
                     .append("svg")
                     .attr("width", sankeyWidth + margin.left + margin.right)
@@ -46,11 +53,6 @@ d3.csv("./data/SankeyData.csv")
                     // "featurePos": "",
                     // "categoryPos": 1
                 }
-                // ,
-                // {
-                //     "source": undefined,
-                //     "target": ""
-                // }
             )
 
         //rearrange the positions of some features
@@ -58,7 +60,7 @@ d3.csv("./data/SankeyData.csv")
         array_move(sankeyData, 79, 11)
 
 
-        console.log(sankeyData)
+        // console.log(sankeyData)
 
         //create an array of unique category names
         const unique = (value, index, self) => {
@@ -69,6 +71,8 @@ d3.csv("./data/SankeyData.csv")
             categoryName.push(d.categoryName);
         });
         let categoryNameUniq = categoryName.filter(unique)
+
+        console.log(categoryNameUniq)
 
         //get data in nodes and links format
         _.map(sankeyData, (d,i) => {
@@ -88,8 +92,6 @@ d3.csv("./data/SankeyData.csv")
                     .uniq()
                     .value()
 
-        // console.log(graph)
-
 
         // loop through each link replacing the text with its index from node
         graph.links.forEach((d,i) => {
@@ -101,7 +103,7 @@ d3.csv("./data/SankeyData.csv")
             graph.nodes[i] = { "name": node }
         })
 
-        console.log(graph)
+        // console.log(graph)
 
         //assigning each node a group
         _.map(graph.nodes, (d,i) => {
@@ -116,12 +118,12 @@ d3.csv("./data/SankeyData.csv")
         });
 
         var sankey = d3.sankey()
-                    .size([sankeyWidth/1.6, sankeyHeight])
+                    .size([sankeyWidth/1.7, sankeyHeight])
                     .nodeWidth(20)
                     .nodePadding(10)
                     .iterations(0)
 
-        sankey(graph)
+        // sankey(graph)
 
 
         const color = d3.scaleOrdinal()
@@ -156,7 +158,7 @@ d3.csv("./data/SankeyData.csv")
                 .attr("fill", "none")
                 .attr("stroke-width", 1.8)
                 .attr("stroke", d => linkColor(d)) //return color(d.source.name)  d.target.name?console.log(true):console.log(false)
-                .attr("transform", `translate(${sankeyWidth/6}, 0)`)
+                .attr("transform", `translate(${sankeyWidth/6.35    }, 0)`)
 
 
         //NODES         
@@ -177,7 +179,7 @@ d3.csv("./data/SankeyData.csv")
                 .attr("height", d => d["node-group"] === "middle"? d.y1 - d.y0 : 5)
                 .attr("fill", d => categoryNameUniq.includes(d.name) ? color(d.name) : 'none' )
                 .attr("opacity", 1)
-                .attr("transform", `translate(${sankeyWidth/6}, 0)`)
+                .attr("transform", `translate(${sankeyWidth/6.4}, 0)`)
         
                 
         //TEXT
@@ -226,11 +228,38 @@ d3.csv("./data/SankeyData.csv")
                     .data(graph.nodes)
                     .enter()
                     .append("text")
-                    .attr("x", d => d["node-group"] === "right"? d.x0 + (d.x0/3.5) : d.x0)
+                    .attr("x", d => d["node-group"] === "right"? d.x0 + (d.x0/3.5) : d.x0 - 5)
                     .attr("y", d => d.y0 + ((d.y1 - d.y0)/2))
                     .attr("fill", textColor)
                     .text(d => d["node-group"] !== "middle" ? d.name : '')
                     .call(textWrap)
+
+        //LEGEND
+
+        let xPos = _.range(sankeyWidth/15 , sankeyWidth/15+800, 160);
+
+        let legend = legendSvg.append("g")
+                        .attr("class", "color-legend")
+                        .selectAll("rect")
+
+        legend
+            .data(categoryNameUniq)
+            .enter()
+            .append("rect")
+            .attr("x", (d,i) => xPos[i])
+            .attr("y", margin.top)
+            .attr("width", 15)
+            .attr("height", 15)
+            .attr("fill", d => color(d))
+
+        let legendText = legendSvg.append("g")
+                            .selectAll(".color-legend")
+                            .data(categoryNameUniq)
+                            .enter()
+                            .append("text")
+                            .attr("x", (d,i) => xPos[i]-xPos[0]/1.5)
+                            .attr("y", margin.top - margin.top/2) //d => (d.y0[0])
+                            .text(d => d)
 
 });
 
