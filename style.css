@@ -57,8 +57,10 @@ a.ref{
     padding-bottom: 450px;
     font-family: 'Roboto Condensed', sans-serif;
     font-size: 16px;
-    color: #333;
-    margin-left: 80px;
+    color: #454545;
+    line-height: 2;
+    /* margin-left: 80px; */
+    text-align: center;
 }
 
 #sections div .step {
@@ -72,11 +74,9 @@ a.ref{
     background: white;
     opacity: .2;
     margin-bottom: 200px;
-    /* background-color: #a7c8e4; */
 }
 #sections > div:last-child{
     margin-bottom: 200px;
-    /* background-color: #ccb7e1; */
 }
 #sections > div.graph-scroll-active{
     opacity: 1;
@@ -113,7 +113,12 @@ a.ref{
 
 #rhh-twice{
     position: relative;
-    padding: 10px 10px 0 10px;
+    padding: 10px 40px 0 40px;
+    text-align: justify;
+}
+
+.sankey-container{
+    display: flex;
 }
 
 #sankey{
@@ -121,6 +126,12 @@ a.ref{
     padding: 10px 10px 0 10px;
     margin-left: 120px;
 }
+
+#sankey-desc{
+    padding: 300px 100px 0px 0px;
+    /* text-align: center; */
+}
+
 
 #footer{
     position: relative;
